@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <script src="sigma.require.js"></script>
+    <script src="plugins/sigma.renderers.customShapes.min.js"></script>
+</head>
+<body>
+
+
+<!-- END SIGMA IMPORTS -->
+<div id="container">
+    <style>
+    #graph-container {
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        position: absolute;
+    }
+    </style>
+    <div id="graph-container"></div>
+</div>
+<script>
+sigma.utils.pkg('sigma.canvas.nodes');
+
+
+
+var g = {
+        nodes: [{
+            id: 'n' + 0,
+            label: "MyComputer",
+            type: "circle",
+            image: {
+                url: "img/my_computer.png",
+                scale: 1.5,
+                clip : 2
+            },
+            x: 0,
+            y: 0,
+            size: Math.random(),
+            color: "#fff"
+        }]
+    };
+
+g.nodes
+
+
+var s = new sigma({
+    graph: g,
+    container: 'graph-container',
+    renderer: {
+        container: document.getElementById('graph-container'),
+        type: 'canvas'
+    },
+    settings: {
+        minNodeSize: 8,
+        maxNodeSize: 16,
+    }
+
+});
+CustomShapes.init(s);
+s.refresh();
+
+
+
+/**
+ * type,signal
+ */
+function createNode(nodeConfig) {
+
+    nodeConfig.ssid = nodeConfig.ssid || "";
+    var imageTypeUrl;
+    switch (nodeConfig.type) {
+        case "ethernet":
+            //imageTypeUrl = "img/wireless.png",
+            break;
+        case "wifi":
+            imageTypeUrl = "img/wireless.png";
+            break;
+        case "base":
+            imageTypeUrl = "img/my_computer.png";
+            break;
+        default:
+            imageTypeUrl = "img/wireless.png";
+            break;
+
+    }
+
+    s.graph.addNode({
+        id: 'n' + nodeConfig.ssid,
+        label: nodeConfig.ssid,
+        type: "circle",
+        image: {
+            url: imageTypeUrl,
+            scale: 1.5
+        },
+        x: Math.random(),
+        y: Math.random(),
+        size: Math.random(),
+        color: "#fff"
+    });
+    s.graph.addEdge({
+        id: 'e' + nodeConfig.ssid,
+        source: 'n' + nodeConfig.ssid,
+        target: "n" + 0,
+        color: '#ccc'
+    });
+    s.refresh();
+}
+
+
+
+</script>
+
+</body>
+</html>
